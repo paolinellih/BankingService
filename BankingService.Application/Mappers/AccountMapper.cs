@@ -1,10 +1,21 @@
 using BankingService.Application.DTOs;
 using BankingService.Domain.Entities;
+using BankingService.Domain.Enums;
+using BankingService.Domain.ValueObjects;
 
 namespace BankingService.Application.Mappers;
 
 public static class AccountMapper
 {
+    public static AccountLocaleDTO ToLocaleDto(AccountLocale locale)
+    {
+        return new AccountLocaleDTO(
+            locale.CountryName,
+            locale.TimeZone,
+            locale.Culture,
+            locale.Abbreviation
+        );
+    }
     public static AccountDto ToDto(Account account)
     {
         return new AccountDto(
@@ -15,10 +26,8 @@ public static class AccountMapper
             account.CreatedAt,
             account.IsActive,
             account.Currency,
-            account.CountryName,
-            account.TimeZone,
-            account.Culture,
-            account.Abbreviation
+            ToLocaleDto(account.Locale),
+            account.AccountType.ToString()
         );
     }
 }

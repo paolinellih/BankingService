@@ -1,3 +1,4 @@
+
 namespace BankingService.Application.DTOs;
 
 public record AccountDto(
@@ -8,7 +9,5 @@ public record AccountDto(
     DateTimeOffset CreatedAt,
     bool IsActive,
     string Currency,
-    string CountryName,
-    string TimeZone,
-    string Culture,
-    string Abbreviation);
+    AccountLocaleDTO Locale,
+    string AccountType);

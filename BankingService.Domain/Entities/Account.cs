@@ -1,6 +1,8 @@
 using BankingService.Domain.Aggregates;
+using BankingService.Domain.Enums;
 using BankingService.Domain.Events;
 using BankingService.Domain.Events.Account;
+using BankingService.Domain.ValueObjects;
 
 namespace BankingService.Domain.Entities;
 
@@ -17,10 +19,8 @@ public class Account : AggregateRoot
     public int Version { get; private set; }
     public decimal DailyWithdrawalLimit { get; private set; }
     public decimal TodayWithdrawalAmount { get; private set; }
-    public string CountryName { get; private set; }
-    public string TimeZone { get; private set; }
-    public string Culture { get; private set; }
-    public string Abbreviation { get; private set; }
+    public AccountLocale Locale { get; private set; }
+    public AccountType AccountType { get; private set; }
 
     private Account() {}
 
@@ -29,10 +29,8 @@ public class Account : AggregateRoot
         decimal initialDeposit,
         string currency = "USD",
         decimal dailyWithdrawalLimit = 1000m,
-        string countryName = "USA",
-        string timeZone = "Eastern Standard Time",
-        string culture = "en-US",
-        string abbreviation = "USD")
+        AccountLocale? locale = null,
+        AccountType? accountType = AccountType.Standard)
     {
         
         if(string.IsNullOrWhiteSpace(accountHolderName))
@@ -43,6 +41,11 @@ public class Account : AggregateRoot
     
         if (string.IsNullOrWhiteSpace(currency))
             throw new ArgumentException("Currency cannot be empty.", nameof(currency));
+        
+        if (dailyWithdrawalLimit < 0)
+            throw new ArgumentException("Daily withdrawal limit cannot be negative.", nameof(dailyWithdrawalLimit));
+        
+        Locale = locale ?? new AccountLocale("USA", "Eastern Standard Time", "en-US", "EST"); // default locale
 
         Id = Guid.NewGuid();
         AccountNumber = GenerateAccountNumber();
@@ -50,13 +53,10 @@ public class Account : AggregateRoot
         Balance = initialDeposit;
         Currency = currency;
         DailyWithdrawalLimit = dailyWithdrawalLimit;
-        CountryName = countryName;
-        TimeZone = timeZone;
-        Culture = culture;
-        Abbreviation = abbreviation;
         CreatedAt = DateTimeOffset.UtcNow;
         LastModifiedAt = CreatedAt;
         IsActive = true;
+        AccountType = accountType ?? AccountType.Standard;
         
         AddDomainEvent(new AccountCreated(Id, AccountNumber, accountHolderName, initialDeposit, currency));
     }
