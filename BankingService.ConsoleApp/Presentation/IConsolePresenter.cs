@@ -11,4 +11,5 @@ public interface IConsolePresenter
     void ShowError(string message);
     void ShowSuccess(string message);
     string FormatCurrency(decimal amount, string cultureName);
+    void ShowAccountSummary(AccountSummaryDto summary, string cultureName);
 }

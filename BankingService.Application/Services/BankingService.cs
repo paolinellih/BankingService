@@ -15,6 +15,7 @@ public class BankingService : IBankingService
     private readonly IGetAccountTransactionsHandler _getAccountTransactionsHandler;
     private readonly IDeactivateAccountHandler _deactivateAccountHandler;
     private readonly ITransactionReversalHandler _transactionReversalHandler;
+    private readonly IGetAccountSummaryHandler _getAccountSummaryHandler;
     
     public BankingService(
         IDepositHandler depositHandler,
@@ -24,7 +25,8 @@ public class BankingService : IBankingService
         ICreateAccountHandler createAccountHandler, 
         IGetAccountBalanceHandler getAccountBalanceHandler, 
         IGetAccountTransactionsHandler getAccountTransactionsHandler, 
-        IDeactivateAccountHandler deactivateAccountHandler)
+        IDeactivateAccountHandler deactivateAccountHandler, 
+        IGetAccountSummaryHandler getAccountSummaryHandler)
     {
         _depositHandler = depositHandler ?? throw new ArgumentNullException(nameof(depositHandler));
         _withdrawalHandler = withdrawalHandler ?? throw new ArgumentNullException(nameof(withdrawalHandler));
@@ -34,6 +36,7 @@ public class BankingService : IBankingService
         _getAccountBalanceHandler = getAccountBalanceHandler ?? throw new ArgumentNullException(nameof(getAccountBalanceHandler));
         _getAccountTransactionsHandler = getAccountTransactionsHandler ?? throw new ArgumentNullException(nameof(getAccountTransactionsHandler));
         _deactivateAccountHandler = deactivateAccountHandler ?? throw new ArgumentNullException(nameof(deactivateAccountHandler));
+        _getAccountSummaryHandler = getAccountSummaryHandler ?? throw new ArgumentNullException(nameof(getAccountSummaryHandler));
     }
     
     public async Task<Result<AccountDto>> CreateAccountAsync(CreateAccountRequest request)
@@ -52,5 +55,6 @@ public class BankingService : IBankingService
         => await _deactivateAccountHandler.HandleAsync(accountId);
     public async Task<Result> ReverseTransactionAsync(Guid transactionId, string reason)
         => await _transactionReversalHandler.HandleReversalAsync(transactionId, reason);
-
+    public async Task<Result<AccountSummaryDto>> GetAccountSummaryAsync(Guid accountId)
+        => await _getAccountSummaryHandler.HandleAsync(accountId);
 }

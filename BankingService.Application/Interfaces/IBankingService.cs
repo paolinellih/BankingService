@@ -13,4 +13,5 @@ public interface IBankingService
     Task<Result<IEnumerable<TransactionDto>>> GetAccountTransactionsAsync(Guid accountId);
     Task<Result> DeactivateAccountAsync(Guid accountId);
     Task<Result> ReverseTransactionAsync(Guid transactionId, string reason);
+    Task<Result<AccountSummaryDto>> GetAccountSummaryAsync(Guid accountId);
 }
