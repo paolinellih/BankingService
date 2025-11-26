@@ -1,5 +1,6 @@
 using BankingService.Application.DTOs;
 using BankingService.Application.Interfaces.Handlers;
+using BankingService.Application.Mappers;
 using BankingService.Application.Results;
 using BankingService.Domain.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -27,19 +28,9 @@ public class GetAccountBalanceHandler : IGetAccountBalanceHandler
             if (account == null)
                 return Result<AccountDto>.Failure("Account not found.");
 
-            return Result<AccountDto>.Success(new AccountDto(
-                account.Id,
-                account.AccountNumber,
-                account.AccountHolderName,
-                account.Balance,
-                account.CreatedAt,
-                account.IsActive,
-                account.Currency,
-                account.CountryName,
-                account.TimeZone,
-                account.Culture,
-                account.Abbreviation
-            ));
+            var dto = AccountMapper.ToDto(account);
+
+            return Result<AccountDto>.Success(dto);
         }
         catch (Exception ex)
         {

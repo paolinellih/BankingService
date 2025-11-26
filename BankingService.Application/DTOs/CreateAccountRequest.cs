@@ -1,3 +1,5 @@
+using BankingService.Domain.Enums;
+
 namespace BankingService.Application.DTOs;
 
 public record CreateAccountRequest(
@@ -8,5 +10,6 @@ public record CreateAccountRequest(
     string CountryName = "USA",
     string TimeZone = "Eastern Standard Time",
     string Culture = "en-US",
-    string Abbreviation = "EST"
+    string Abbreviation = "EST",
+    AccountType AccountType = AccountType.Standard
 );

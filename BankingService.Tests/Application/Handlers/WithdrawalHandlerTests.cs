@@ -240,6 +240,8 @@ namespace BankingService.Tests.Application.Handlers
             Assert.Throws<ArgumentNullException>(() =>
                 new WithdrawalHandler(_loggerMock.Object, _lockManagerMock.Object, _accountRepoMock.Object,
                     _txRepoMock.Object, _unitOfWorkMock.Object, null!));
+
+            await Task.CompletedTask;
         }
     }
 }
