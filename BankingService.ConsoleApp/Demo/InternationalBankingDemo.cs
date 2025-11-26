@@ -247,7 +247,7 @@ public sealed class InternationalBankingDemo : IBankingDemo
         
         _console.ShowTitle($"{account.AccountHolderName} Account Summary ({account.AccountNumber})");
         
-        _console.ShowAccountSummary(summaryResult.Value, account.Culture);
+        _console.ShowAccountSummary(summaryResult.Value, account.Locale.Culture);
     }
 
     #endregion
