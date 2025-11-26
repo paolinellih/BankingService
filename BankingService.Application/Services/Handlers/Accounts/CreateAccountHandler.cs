@@ -5,6 +5,7 @@ using BankingService.Application.Results;
 using BankingService.Domain.Entities;
 using BankingService.Domain.Enums;
 using BankingService.Domain.Interfaces;
+using BankingService.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 
 namespace BankingService.Application.Services.Handlers.Accounts;
@@ -32,12 +33,19 @@ public class CreateAccountHandler : ICreateAccountHandler
     {
         try
         {
+            var locale = new AccountLocale(
+                request.CountryName,
+                request.TimeZone,
+                request.Culture,
+                request.Abbreviation);
 
             var account = new Account(
                 request.AccountHolderName, 
                 request.InitialDeposit,
                 request.Currency,
-                request.DailyWithdrawalLimit);
+                request.DailyWithdrawalLimit,
+                locale,
+                request.AccountType);
             _ = await _accountRepository.AddAsync(account);
 
             if (request.InitialDeposit > 0)

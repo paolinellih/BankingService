@@ -183,12 +183,12 @@ public sealed class InternationalBankingDemo : IBankingDemo
             var balanceResult = await _bankingService.GetAccountBalanceAsync(account.Id);
             if (!balanceResult.IsSuccess || balanceResult.Value is null)
             {
-                _console.ShowError($"Failed to get balance for {account.AccountHolderName} ({account.CountryName})");
+                _console.ShowError($"Failed to get balance for {account.AccountHolderName} ({account.Locale.CountryName})");
                 continue;
             }
 
             _console.ShowMessage(
-                $"{account.AccountHolderName} ({account.CountryName}) Balance: {_console.FormatCurrency(balanceResult.Value.Balance, account.Culture)}",
+                $"{account.AccountHolderName} ({account.Locale.CountryName}) Balance: {_console.FormatCurrency(balanceResult.Value.Balance, account.Locale.Culture)}",
                 ConsoleColor.Green);
         }
     }
@@ -230,7 +230,7 @@ public sealed class InternationalBankingDemo : IBankingDemo
         // Reverse order
         var transactions = txsResult.Value!.OrderByDescending((t => t.Timestamp));
         
-        _console.ShowTransactionHistory(transactions, account.TimeZone, account.Culture, account.Abbreviation);
+        _console.ShowTransactionHistory(transactions, account.Locale.TimeZone, account.Locale.Culture, account.Locale.Abbreviation);
     }
 
     #endregion
