@@ -75,6 +75,9 @@ public sealed class InternationalBankingDemo : IBankingDemo
         await ShowTransactionHistoryAsync(account1);
         await ShowTransactionHistoryAsync(account2);
         await ShowTransactionHistoryAsync(account3);
+        
+        //Show account summary reports
+        await ShowAccountSummaryReport(account1);
     }
 
     #region Account Operations
@@ -231,6 +234,20 @@ public sealed class InternationalBankingDemo : IBankingDemo
         var transactions = txsResult.Value!.OrderByDescending((t => t.Timestamp));
         
         _console.ShowTransactionHistory(transactions, account.Locale.TimeZone, account.Locale.Culture, account.Locale.Abbreviation);
+    }
+
+    private async Task ShowAccountSummaryReport(AccountDto account)
+    {
+        var summaryResult = await _bankingService.GetAccountSummaryAsync(account.Id);
+        if (!summaryResult.IsSuccess || summaryResult.Value is null)
+        {
+            _console.ShowError(summaryResult.ErrorMessage!);
+            return;
+        }
+        
+        _console.ShowTitle($"{account.AccountHolderName} Account Summary ({account.AccountNumber})");
+        
+        _console.ShowAccountSummary(summaryResult.Value, account.Culture);
     }
 
     #endregion

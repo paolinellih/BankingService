@@ -10,6 +10,10 @@
     <PackageReference Include="Scrutor" Version="6.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Services\Handlers\Accounts\GetAccountSummaryReport.cs" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>

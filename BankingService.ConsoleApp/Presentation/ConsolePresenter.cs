@@ -94,4 +94,15 @@ public sealed class ConsolePresenter : IConsolePresenter
     
     public string FormatCurrency(decimal amount, string culture)
         => amount.ToString("C", new CultureInfo(culture));
+
+    public void ShowAccountSummary(AccountSummaryDto summary, string cultureName)
+    {
+        var culture = new CultureInfo(cultureName);
+        Console.WriteLine("\nAccount Summary:");
+        Console.WriteLine($"  Account ID       : {summary.AccountId}");
+        Console.WriteLine($"  Balance          : {summary.Balance.ToString("C", culture)}");
+        Console.WriteLine($"  Total Deposits   : {summary.TotalDeposits.ToString("C", culture)}");
+        Console.WriteLine($"  Total Withdrawals: {summary.Withdrawals.ToString("C", culture)}");
+        Console.WriteLine($"  Last Activity    : {summary.LastActivity} on {summary.LastActivityDate.ToString("yyyy-MM-dd HH:mm:ss", culture)}\n");
+    }
 }

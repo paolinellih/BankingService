@@ -41,6 +41,7 @@ public class BankingServiceTests
         var getTransactionsHandler = new GetAccountTransactionsHandler(Mock.Of<ILogger<GetAccountTransactionsHandler>>(), accountRepo, transactionRepo);
         var deactivateHandler = new DeactivateAccountHandler(Mock.Of<ILogger<DeactivateAccountHandler>>(), accountRepo, unitOfWork);
         var reversalHandler = new TransactionReversalHandler(accountRepo, transactionRepo, unitOfWork, lockManager, Mock.Of<ILogger<TransactionReversalHandler>>());
+        var getAccountSummaryHandler = new GetAccountSummaryHandler(Mock.Of<ILogger<GetAccountSummaryHandler>>(), getTransactionsHandler);
 
         // Banking service
         _bankingService = new BankingService.Application.Services.BankingService(
@@ -51,7 +52,8 @@ public class BankingServiceTests
             createAccountHandler,
             getBalanceHandler,
             getTransactionsHandler,
-            deactivateHandler
+            deactivateHandler,
+            getAccountSummaryHandler
         );
     }
 

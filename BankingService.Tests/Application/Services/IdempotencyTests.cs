@@ -70,6 +70,9 @@ public class IdempotencyTests
             unitOfWork,
             lockManager,
             Mock.Of<ILogger<TransactionReversalHandler>>());
+        var getAccountSummaryHandler = new GetAccountSummaryHandler(
+            Mock.Of<ILogger<GetAccountSummaryHandler>>(),
+            getTransactionsHandler);
 
         // Banking service
         _bankingService = new BankingService.Application.Services.BankingService(
@@ -80,7 +83,8 @@ public class IdempotencyTests
             createAccountHandler,
             getBalanceHandler,
             getTransactionsHandler,
-            deactivateHandler);
+            deactivateHandler,
+            getAccountSummaryHandler);
     }
 
     [Fact]
